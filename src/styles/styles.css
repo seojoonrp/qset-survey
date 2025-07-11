@@ -2,6 +2,12 @@
   --crimson: #B62B5C;
   --burgundy: #5E2D3E;
   --black: #202020;
+  --font-main: 'Pretendard', sans-serif;
+}
+
+body {
+  font-family: var(--font-main);
+  color: var(--black);
 }
 
 .welcome-wrapper {
@@ -16,7 +22,6 @@
 .welcome-title-text {
   color: var(--crimson);
   text-align: center;
-  font-family: Pretendard;
   font-size: 21px;
   font-weight: 800;
   line-height: 24px;
@@ -35,14 +40,12 @@
   align-items: center;
   flex-shrink: 0;
   margin-top: 25px;
-  
   border-radius: 7px;
   background: var(--burgundy);
 }
 .hello-text {
   color: white;
   text-align: justify;
-  font-family: Pretendard;
   font-size: 13.5px;
   font-weight: 300;
   line-height: 16px;
@@ -63,7 +66,6 @@
 .logo-text {
   margin-left: 19px;
   color: #a22450;
-  font-family: Pretendard;
   font-size: 12px;
   font-weight: 700;
   line-height: normal;
@@ -85,14 +87,12 @@
   justify-content: center;
   align-items: center;
   flex-shrink: 0;
-
   background-color: var(--burgundy);
   border-radius: 17px;
 }
 .phone-input-square-text {
   color: white;
   text-align: center;
-  font-family: Pretendard;
   font-size: 16px;
   font-weight: 600;
   letter-spacing: -0.2px;
@@ -100,7 +100,6 @@
 .phone-input {
   width: 231px;
   margin-left: 6px;
-
   border: none;
   border-radius: 17px;
   background-color: #E7E7E7;
@@ -110,7 +109,6 @@
   letter-spacing: -0.2px;
   text-align: center;
   color: var(--burgundy);
-
   outline: none;
 }
 .phone-input::placeholder {
@@ -124,17 +122,14 @@
   align-items: center;
   flex-shrink: 0;
   margin-top: 44px;
-
   border: none;
   border-radius: 20px;
   background: var(--crimson);
   cursor: pointer;
-
   transition: background 0.2s ease, transform 0.2s ease;
 }
 .next-button:hover {
   background: #a22450;
-  /* var(--crimson)보다 조금 어두운 색상으로 조절 */
   transform: translateY(-2px);
 }
 .next-button-text {
