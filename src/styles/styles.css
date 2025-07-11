@@ -1,3 +1,9 @@
+:root {
+  --crimson: #B62B5C;
+  --burgundy: #5E2D3E;
+  --black: #202020;
+}
+
 .welcome-wrapper {
   display: flex;
   flex: 1;
@@ -6,4 +12,136 @@
   align-items: center;
   height: 100vh;
   background-color: white;
+}
+.welcome-title-text {
+  color: var(--crimson);
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 21px;
+  font-weight: 800;
+  line-height: 24px;
+  letter-spacing: -0.4px;
+}
+.welcome-subtitle-text {
+  font-size: 18px;
+  font-weight: 500;
+}
+.hello-wrapper {
+  display: flex;
+  width: 338px;
+  padding: 23px 20px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  margin-top: 25px;
+  
+  border-radius: 7px;
+  background: var(--burgundy);
+}
+.hello-text {
+  color: white;
+  text-align: justify;
+  font-family: Pretendard;
+  font-size: 13.5px;
+  font-weight: 300;
+  line-height: 16px;
+  letter-spacing: -0.2px;
+}
+.hello-bold {
+  font-weight: 600;
+}
+.logo-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+.logo-image {
+  width: 152px;
+  height: auto;
+}
+.logo-text {
+  margin-left: 19px;
+  color: #a22450;
+  font-family: Pretendard;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: -0.2px;
+}
+.logo-text-light {
+  font-weight: 500;
+}
+.phone-input-wrapper {
+  display: flex;
+  width: 378px;
+  height: 36px;
+  justify-content: center;
+  margin-top: 20px;
+}
+.phone-input-square {
+  display: flex;
+  width: 122px;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+
+  background-color: var(--burgundy);
+  border-radius: 17px;
+}
+.phone-input-square-text {
+  color: white;
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+}
+.phone-input {
+  width: 231px;
+  margin-left: 6px;
+
+  border: none;
+  border-radius: 17px;
+  background-color: #E7E7E7;
+  font-family: Pretendard;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: -0.2px;
+  text-align: center;
+  color: var(--burgundy);
+
+  outline: none;
+}
+.phone-input::placeholder {
+  color: #A9A9A9;
+  font-weight: 500;
+}
+.next-button {
+  display: flex;
+  padding: 9px 32px;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  margin-top: 44px;
+
+  border: none;
+  border-radius: 20px;
+  background: var(--crimson);
+  cursor: pointer;
+
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.next-button:hover {
+  background: #a22450;
+  /* var(--crimson)보다 조금 어두운 색상으로 조절 */
+  transform: translateY(-2px);
+}
+.next-button-text {
+  color: #FFF;
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 25px;
+  font-weight: 800;
+  line-height: normal;
 }
