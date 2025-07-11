@@ -7,7 +7,7 @@ const Step1Page = () => {
   return (
     <div>
       <span>스텝1페이지</span>
-      <button onClick={() => navigate("/step1")}>NEXT</button>
+      <button onClick={() => navigate("/step2")}>NEXT</button>
     </div>
   );
 };
