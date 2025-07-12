@@ -51,6 +51,12 @@ const WelcomePage = () => {
             설문응답이 전송되면 응답을 수정할 수 없습니다.
           </span>
           <br /> <br />
+          &nbsp; 넷째, 본 웹 설문지는 가로로 긴 화면에서 보기에 최적화되어
+          있습니다. 휴대전화 사용 시 화면이 깨질 수 있으니{" "}
+          <span className="hello-bold">
+            PC, 태블릿 등 넓은 화면을 가진 기기로 참여해주시면 감사하겠습니다.
+          </span>
+          <br /> <br />
           &nbsp; 본 조사의 결과는 연구를 위한 자료로 사용할 것이며, 연구 목적
           이외에는 이용하지 않을 것을 약속드립니다. 바쁘실 와중에 본 설문에
           참여해 주셔서 진심으로 감사드립니다.
@@ -73,9 +79,14 @@ const WelcomePage = () => {
         <input
           className="phone-input"
           type="text"
-          placeholder="휴대전화번호를 입력해주세요"
+          placeholder="010-1234-5678"
           value={phoneNumber}
           onChange={(e) => setPhoneNumber(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleNext();
+            }
+          }}
         />
       </div>
       <button className="next-button" onClick={handleNext}>
