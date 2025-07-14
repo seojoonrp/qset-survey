@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "../styles/styles.css";
+import NextButton from "../components/NextButton";
+import TitleText from "../components/TitleText";
 import Logo from "../assets/images/chungbuk-logo.svg";
 
 const WelcomePage = () => {
@@ -9,21 +11,17 @@ const WelcomePage = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
 
   const handleNext = () => {
-    const phoneRegex = /^\d{3}-\d{4}-\d{4}$/;
-    if (!phoneRegex.test(phoneNumber)) {
-      alert("휴대전화번호를 XXX-XXXX-XXXX 형식으로 입력해주세요.");
-      return;
-    }
+    // const phoneRegex = /^\d{3}-\d{4}-\d{4}$/;
+    // if (!phoneRegex.test(phoneNumber)) {
+    //   alert("휴대전화번호를 XXX-XXXX-XXXX 형식으로 입력해주세요.");
+    //   return;
+    // }
     navigate("/step1");
   };
 
   return (
     <div className="welcome-wrapper">
-      <span className="welcome-title-text">
-        영아 교사 애착 Qset 문항 및 준거 개발 연구
-        <br />
-        <span className="welcome-subtitle-text">(참여교사용)</span>
-      </span>
+      <TitleText />
       <div className="hello-wrapper">
         <span className="hello-text">
           <span className="hello-bold">안녕하십니까?</span>
@@ -89,9 +87,7 @@ const WelcomePage = () => {
           }}
         />
       </div>
-      <button className="next-button" onClick={handleNext}>
-        <span className="next-button-text">NEXT</span>
-      </button>
+      <NextButton onClick={handleNext} />
     </div>
   );
 };
