@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 import TitleText from "../components/TitleText";
 import NextButton from "../components/NextButton";
 import testAnswers from "../data/testAnswers";
 import "../styles/styles.css";
+import DragQuestion from "../components/DragQuestion";
 
 const mapGroupToScore = (groupedAnswers) => {
   const entries = Object.entries(groupedAnswers).map(([key, value]) => ({
@@ -31,7 +32,7 @@ const mapGroupToScore = (groupedAnswers) => {
 };
 
 const Step2Page = () => {
-  const location = useLocation();
+  // const location = useLocation();
   // const initialAnswers = mapGroupToScore(
   //   location.state?.answers
   // );
@@ -54,7 +55,6 @@ const Step2Page = () => {
 
   const handleNext = () => {
     // End Survey
-    console.log(answers);
   };
 
   return (
@@ -67,10 +67,11 @@ const Step2Page = () => {
             점수별로 분류하는 과정이며, 방법은 아래와 같습니다.
           </span>
           <span className="step-sub-description step2-description">
-            1. 그룹별로 배분한 18개 문항을 하나씩 열어 읽고, 해당 영아의 행동에
-            일치할수록 높은 점수에 다시 배분합니다. ‘상’, ‘중’, ‘하’ 그룹에
-            배분된 문항들은 각각 7~9점, 4~6점, 1~3점 구간에 대응되지만, 반드시
-            고정된 것은 아니며 상황에 맞게 다른 점수에 배분하여도 무방합니다.
+            1. 그룹별로 배분한 18개 문항을 하나씩 읽고, 해당 영아의 행동에
+            배분된 문항들은 각각 일치할수록 높은 점수에 다시 배분합니다. ‘상’,
+            ‘중’, ‘하’ 그룹에 배분된 문항들은 각각 7~9점, 4~6점, 1~3점 구간에
+            대응되지만, 반드시 고정된 것은 아니며 상황에 맞게 다른 점수에
+            배분하여도 무방합니다.
           </span>
           <span className="step-sub-description sub-bold step2-description">
             2. 문항은 1점부터 9점까지의 점수로 분류되며, 최종적으로 각 그룹에는
@@ -78,9 +79,9 @@ const Step2Page = () => {
             아래쪽에서 확인 가능하오니, 참조하여 주시기 바랍니다.
           </span>
           <span className="step-sub-description step2-description">
-            3. 각 문항을 클릭하여 밑쪽의 원하는 점수 칸으로 드래그한 뒤, 놓으면
-            점수가 결정됩니다. 필요하다면 다시 드래그하여 다른 점수 칸으로
-            옮기는 것도 가능합니다.
+            3. 각 문항을 클릭하여 원하는 점수 칸으로 드래그한 뒤, 놓으면 점수가
+            결정됩니다. 필요하다면 다시 드래그하여 다른 점수 칸으로 옮기는 것도
+            가능합니다.
           </span>
           <span className="step-sub-description step2-description">
             4. 모든 문항을 분류한 후, ‘설문응답 전송’을 누르시면 조사가
@@ -160,21 +161,27 @@ const Step2Page = () => {
         <DragDropContext onDragEnd={handleDragEnd}>
           <div style={{ display: "flex", flexDirection: "row", gap: 8 }}>
             {[...Array(9)].map((_, scoreIdx) => (
-              <Droppable key={scoreIdx} droppableId={(scoreIdx + 1).toString()}>
+              <Droppable
+                key={scoreIdx}
+                droppableId={(scoreIdx + 1).toString()}
+                direction="vertical"
+                isDropDisabled={false}
+                isCombineEnabled={false}
+                ignoreContainerClipping={false}
+              >
                 {(provided) => (
                   <div
                     ref={provided.innerRef}
                     {...provided.droppableProps}
-                    style={{
-                      width: 153,
-                      border: "1px solid gray",
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: 5,
-                    }}
+                    className="droppable-wrapper"
                   >
                     {answers
                       .filter((item) => item.score === scoreIdx + 1)
+                      .sort(
+                        (a, b) =>
+                          answers.findIndex((x) => x.id === a.id) -
+                          answers.findIndex((x) => x.id === b.id)
+                      )
                       .map((item, index) => (
                         <Draggable
                           key={item.id}
@@ -182,18 +189,11 @@ const Step2Page = () => {
                           index={index}
                         >
                           {(provided) => (
-                            <div
-                              ref={provided.innerRef}
-                              {...provided.draggableProps}
-                              {...provided.dragHandleProps}
-                              style={{
-                                padding: 8,
-                                background: "lightblue",
-                                ...provided.draggableProps.style,
-                              }}
-                            >
-                              {item.id}
-                            </div>
+                            <DragQuestion
+                              provided={provided}
+                              questionId={item.id}
+                              score={item.score}
+                            />
                           )}
                         </Draggable>
                       ))}
@@ -204,6 +204,8 @@ const Step2Page = () => {
             ))}
           </div>
         </DragDropContext>
+
+        <div className="divide-line" />
 
         <NextButton onClick={handleNext} text="설문조사 완료" />
       </div>
