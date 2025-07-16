@@ -27,43 +27,36 @@ const Step1Page = () => {
     //   return;
     // }
 
-    navigate("/step2");
+    navigate("/step2", { state: { answers } });
   };
 
   return (
-    <div className="step1-wrapper">
-      <div className="step1-scroll-wrapper">
+    <div className="step-wrapper">
+      <div className="step-scroll-wrapper">
         <TitleText />
-        <span className="step1-main-description">
+        <span className="step-main-description">
           1단계는 54개의 문항을 ‘상’ , ‘중’ , ‘하’ 그룹으로 분류하는 과정이며,
           방법은 아래와 같습니다.
         </span>
-        <span className="step1-sub-description">
-          1. 문항을 하나씩 읽습니다.
-        </span>
-        <span className="step1-sub-description">
+        <span className="step-sub-description">1. 문항을 하나씩 읽습니다.</span>
+        <span className="step-sub-description">
           2. 문항이 해당 영아와 나의 관계에서 보이는 행동과 많이 일치하거나,
           해당 영아가 보이는 특징적인 행동인 경우 ‘상’을 클릭합니다. 반대로
           일치하지 않거나 판단할 수 없다면 ‘하’로, 보통 일치하거나
           애매모호하다고 생각되면 ‘중’으로 클릭합니다.
         </span>
-        <span className="step1-sub-description sub-bold">
+        <span className="step-sub-description sub-bold">
           3. 상, 중, 하 분류 시 최종적으로 각 그룹에는 18개의 문항이 배분되어야
-          합니다. 문항 분류 시 그룹별로 배분 가능한 문항의 잔여 개수가 메시지로
-          확인 가능하오니, 참조하여 주시기 바랍니다.
+          합니다. 문항 분류 시 현재 그룹별 선택 개수를 아래쪽에서 확인
+          가능하오니, 참조하여 주시기 바랍니다.
         </span>
-        <span className="step1-sub-description">
-          4. 그룹별로 18개의 문항을 초과하는 경우, ‘다른 그룹으로 선택’ 메시지가
-          뜹니다. 이 경우 기존에 배분한 문항 중 수정하고 싶은 경우 재배분이
-          가능합니다.
-        </span>
-        <span className="step1-sub-description">
-          5. 모든 문항에 응답한 후, ‘NEXT’ 를 누르면 2단계로 넘어갑니다.
+        <span className="step-sub-description">
+          4. 모든 문항에 응답한 후, ‘NEXT’ 를 누르면 2단계로 넘어갑니다.
         </span>
 
         <div className="rating-options">
           {[
-            { label: "상", description: "많이 일치하며\n특정적이다" },
+            { label: "상", description: "많이 일치하며\n특징적이다" },
             { label: "중", description: "보통 일치하거나\n애매모호하다" },
             { label: "하", description: "일치하지 않거나\n판단할 수 없다" },
           ].map((item) => (
@@ -100,21 +93,21 @@ const Step1Page = () => {
         <NextButton onClick={handleNext} />
       </div>
 
-      <div className="step1-bottom-fixed-wrapper">
+      <div className="bottom-fixed-wrapper">
         <span className="group-description-text">
           상, 중, 하 그룹별로 18개의 문항이 배분되어야 합니다.
         </span>
         <div className="group-remaining">
           <span className="group-remaining-text">
-            상 : {Object.values(answers).filter((a) => a === "상").length}
+            상 : {Object.values(answers).filter((a) => a === "상").length}개
             &nbsp;&nbsp;/&nbsp;&nbsp;
           </span>
           <span className="group-remaining-text">
-            중 : {Object.values(answers).filter((a) => a === "중").length}
+            중 : {Object.values(answers).filter((a) => a === "중").length}개
             &nbsp;&nbsp;/&nbsp;&nbsp;
           </span>
           <span className="group-remaining-text">
-            하 : {Object.values(answers).filter((a) => a === "하").length}
+            하 : {Object.values(answers).filter((a) => a === "하").length}개
           </span>
         </div>
       </div>
