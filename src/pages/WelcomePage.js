@@ -11,11 +11,12 @@ const WelcomePage = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
 
   const handleNext = () => {
-    // const phoneRegex = /^\d{3}-\d{4}-\d{4}$/;
-    // if (!phoneRegex.test(phoneNumber)) {
-    //   alert("휴대전화번호를 XXX-XXXX-XXXX 형식으로 입력해주세요.");
-    //   return;
-    // }
+    const phoneRegex = /^\d{3}-\d{4}-\d{4}$/;
+    if (!phoneRegex.test(phoneNumber)) {
+      alert("휴대전화번호를 XXX-XXXX-XXXX 형식으로 입력해주세요.");
+      return;
+    }
+
     navigate("/step1");
   };
 

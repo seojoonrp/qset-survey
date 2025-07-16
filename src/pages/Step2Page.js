@@ -17,26 +17,23 @@ const mapGroupToScore = (groupedAnswers) => {
   const result = [];
 
   [
-    { key: "하", base: 1 },
-    { key: "중", base: 4 },
-    { key: "상", base: 7 },
+    { key: "하", base: 2 },
+    { key: "중", base: 5 },
+    { key: "상", base: 8 },
   ].forEach(({ key, base }) => {
     entries
       .filter((item) => item.group === key)
       .forEach((item, idx) => {
-        const score = base + Math.floor(idx / 6);
-        result.push({ id: item.id, score });
+        result.push({ id: item.id, score: base });
       });
   });
   return result;
 };
 
 const Step2Page = () => {
-  // const location = useLocation();
-  // const initialAnswers = mapGroupToScore(
-  //   location.state?.answers
-  // );
-  const initialAnswers = mapGroupToScore(testAnswers);
+  const location = useLocation();
+  const initialAnswers = mapGroupToScore(location.state?.answers);
+  // const initialAnswers = mapGroupToScore(testAnswers);
 
   const [answers, setAnswers] = useState(initialAnswers);
 
@@ -54,6 +51,16 @@ const Step2Page = () => {
   };
 
   const handleNext = () => {
+    const isValid = [...Array(9)].every(
+      (_, i) => answers.filter((item) => item.score === i + 1).length === 6
+    );
+    if (!isValid) {
+      alert("각 점수(1~9)별로 6개의 문항을 배분해주세요.");
+      return;
+    }
+
+    console.log("설문이 종료되었습니다.");
+    console.log("최종 문항 분류 결과:", answers);
     // End Survey
   };
 
@@ -204,8 +211,6 @@ const Step2Page = () => {
             ))}
           </div>
         </DragDropContext>
-
-        <div className="divide-line" />
 
         <NextButton onClick={handleNext} text="설문조사 완료" />
       </div>
