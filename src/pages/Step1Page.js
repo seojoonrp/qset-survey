@@ -18,14 +18,14 @@ const Step1Page = () => {
   };
 
   const handleNext = () => {
-    const countH = Object.values(answers).filter((a) => a === "상").length;
-    const countM = Object.values(answers).filter((a) => a === "중").length;
-    const countL = Object.values(answers).filter((a) => a === "하").length;
+    // const countH = Object.values(answers).filter((a) => a === "상").length;
+    // const countM = Object.values(answers).filter((a) => a === "중").length;
+    // const countL = Object.values(answers).filter((a) => a === "하").length;
 
-    if (countH !== 18 || countM !== 18 || countL !== 18) {
-      alert("상, 중, 하 그룹별로 각각 18개씩 선택해 주세요.");
-      return;
-    }
+    // if (countH !== 18 || countM !== 18 || countL !== 18) {
+    //   alert("상, 중, 하 그룹별로 각각 18개씩 선택해 주세요.");
+    //   return;
+    // }
 
     navigate("/step2", { state: { answers } });
   };

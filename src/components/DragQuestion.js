@@ -18,7 +18,7 @@ const DragQuestion = ({ provided, questionId, score }) => {
         className="drag-question-text"
         style={{ backgroundColor: `var(${navyColorVar})` }}
       >
-        <span style={{ fontWeight: 600, fontSize: 16, marginBottom: 5 }}>
+        <span style={{ fontWeight: 600, fontSize: 14, marginBottom: 3 }}>
           {question.id}.{"\n"}
         </span>
         {question.text}

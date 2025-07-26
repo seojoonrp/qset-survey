@@ -32,8 +32,8 @@ const mapGroupToScore = (groupedAnswers) => {
 
 const Step2Page = () => {
   const location = useLocation();
-  const initialAnswers = mapGroupToScore(location.state?.answers);
-  // const initialAnswers = mapGroupToScore(testAnswers);
+  // const initialAnswers = mapGroupToScore(location.state?.answers);
+  const initialAnswers = mapGroupToScore(testAnswers);
 
   const [answers, setAnswers] = useState(initialAnswers);
 
@@ -96,27 +96,27 @@ const Step2Page = () => {
           </span>
           <span className="step-sub-description step2-warning">
             ※ 본 설문은 가로로 넓은 화면 구성을 필요로 합니다. 모바일 기기나
-            작은 태블릿에서는 화면이 잘릴 수 있기에, 가급적 가로로 긴 PC
-            화면이나 큰 화면의 태블릿을 사용해주시면 감사하겠습니다.
+            태블릿에서는 화면이 잘릴 수 있으니, PC를 사용해 참여해주시면
+            감사하겠습니다.
           </span>
         </>
 
         <div className="step2-rating-options">
           <div
             className="step2-rating-button"
-            style={{ backgroundColor: "var(--low-navy)", width: 475 }}
+            style={{ backgroundColor: "var(--low-navy)", width: 406 }}
           >
             하
           </div>
           <div
             className="step2-rating-button"
-            style={{ backgroundColor: "var(--medium-navy)", width: 475 }}
+            style={{ backgroundColor: "var(--medium-navy)", width: 406 }}
           >
             중
           </div>
           <div
             className="step2-rating-button"
-            style={{ backgroundColor: "var(--high-navy)", width: 475 }}
+            style={{ backgroundColor: "var(--high-navy)", width: 406 }}
           >
             상
           </div>

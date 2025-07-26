@@ -4,18 +4,17 @@ import { useNavigate } from "react-router-dom";
 import "../styles/styles.css";
 import NextButton from "../components/NextButton";
 import TitleText from "../components/TitleText";
-import Logo from "../assets/images/chungbuk-logo.svg";
 
 const WelcomePage = () => {
   const navigate = useNavigate();
   const [phoneNumber, setPhoneNumber] = useState("");
 
   const handleNext = () => {
-    const phoneRegex = /^\d{3}-\d{4}-\d{4}$/;
-    if (!phoneRegex.test(phoneNumber)) {
-      alert("휴대전화번호를 XXX-XXXX-XXXX 형식으로 입력해주세요.");
-      return;
-    }
+    // const phoneRegex = /^\d{3}-\d{4}-\d{4}$/;
+    // if (!phoneRegex.test(phoneNumber)) {
+    //   alert("휴대전화번호를 XXX-XXXX-XXXX 형식으로 입력해주세요.");
+    //   return;
+    // }
 
     navigate("/step1");
   };
@@ -23,6 +22,7 @@ const WelcomePage = () => {
   return (
     <div className="welcome-wrapper">
       <TitleText />
+
       <div className="hello-wrapper">
         <span className="hello-text">
           <span className="hello-bold">안녕하십니까?</span>
@@ -50,10 +50,10 @@ const WelcomePage = () => {
             설문응답이 전송되면 응답을 수정할 수 없습니다.
           </span>
           <br /> <br />
-          &nbsp; 넷째, 본 웹 설문지는 가로로 긴 화면에서 보기에 최적화되어
-          있습니다. 휴대전화 사용 시 화면이 깨질 수 있으니{" "}
+          &nbsp; 넷째, 본 설문은 가로로 넓은 화면 구성을 필요로 합니다. 모바일
+          기기나 태블릿에서는 화면이 잘릴 수 있으니{" "}
           <span className="hello-bold">
-            PC, 태블릿 등 넓은 화면을 가진 기기로 참여해주시면 감사하겠습니다.
+            PC를 사용해 참여해주시면 감사하겠습니다.
           </span>
           <br /> <br />
           &nbsp; 본 조사의 결과는 연구를 위한 자료로 사용할 것이며, 연구 목적
@@ -61,16 +61,13 @@ const WelcomePage = () => {
           참여해 주셔서 진심으로 감사드립니다.
         </span>
       </div>
-      <div className="logo-wrapper">
-        <img className="logo-image" src={Logo} alt="로고 이미지" />
-        <span className="logo-text">
-          충북대학교
-          <br />{" "}
-          <span className="logo-text-light">일반대학원 아동복지학전공</span>
-          <br /> 연구자 : <span className="logo-text-light">김경화</span>
-          <br /> 지도교수 : <span className="logo-text-light">신나리</span>
-        </span>
-      </div>
+
+      <span className="researcher-text">
+        <span style={{ fontWeight: 700 }}>연구자 김경화</span> (충북대학교
+        부설어린이집 원장), <span style={{ fontWeight: 700 }}>신나리</span>{" "}
+        (충북대학교 아동복지학과 교수)
+      </span>
+
       <div className="phone-input-wrapper">
         <div className="phone-input-square">
           <span className="phone-input-square-text">휴대전화번호</span>
@@ -88,6 +85,7 @@ const WelcomePage = () => {
           }}
         />
       </div>
+
       <NextButton onClick={handleNext} />
     </div>
   );
