@@ -95,10 +95,13 @@ const Step2Page = () => {
       return;
     }
 
+    const surveyDate = new Date().toISOString().split("T")[0];
+
     const finalResult = {
       phoneNumber,
       childName,
       childBirthDate,
+      surveyDate,
       answers: step2Answers,
     };
 

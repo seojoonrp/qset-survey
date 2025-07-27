@@ -47,9 +47,9 @@ const WelcomePage = () => {
       );
       return;
     }
-    if (ageInYears > 3) {
+    if (ageInYears > 3 || ageInYears < 1) {
       alert(
-        "본 설문조사는 36개월 이하의 영아를 대상으로 합니다. 생후 36개월 이상의 영아는 검사 대상이 아닙니다."
+        "본 설문조사는 12개월 이상 36개월 미만의 영아를 대상으로 합니다. 생후 36개월 이상 또는 12개월 미만의 영아는 검사 대상이 아닙니다."
       );
       return;
     }
@@ -99,12 +99,6 @@ const WelcomePage = () => {
           참여해 주셔서 진심으로 감사드립니다.
         </span>
       </div>
-
-      <span className="researcher-text">
-        <span style={{ fontWeight: 700 }}>연구자 김경화</span> (충북대학교
-        부설어린이집 원장), <span style={{ fontWeight: 700 }}>신나리</span>{" "}
-        (충북대학교 아동복지학과 교수)
-      </span>
 
       <div
         className="phone-input-wrapper"
