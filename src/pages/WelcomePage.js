@@ -1,20 +1,58 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { SurveyContext } from "../context/SurveyContext";
 import "../styles/styles.css";
 import NextButton from "../components/NextButton";
 import TitleText from "../components/TitleText";
 
 const WelcomePage = () => {
   const navigate = useNavigate();
-  const [phoneNumber, setPhoneNumber] = useState("");
+
+  const {
+    phoneNumber,
+    setPhoneNumber,
+    childName,
+    setChildName,
+    childBirthDate,
+    setChildBirthDate,
+  } = useContext(SurveyContext);
 
   const handleNext = () => {
-    // const phoneRegex = /^\d{3}-\d{4}-\d{4}$/;
-    // if (!phoneRegex.test(phoneNumber)) {
-    //   alert("휴대전화번호를 XXX-XXXX-XXXX 형식으로 입력해주세요.");
-    //   return;
-    // }
+    const phoneRegex = /^\d{3}-\d{4}-\d{4}$/;
+    if (!phoneRegex.test(phoneNumber)) {
+      alert("휴대전화번호를 XXX-XXXX-XXXX 형식으로 입력해주세요.");
+      return;
+    }
+
+    if (!childName.trim()) {
+      alert("영아 이름을 입력해주세요.");
+      return;
+    }
+
+    const birthDateRegex = /^\d{4}-\d{2}-\d{2}$/;
+    if (!birthDateRegex.test(childBirthDate)) {
+      alert("영아 생년월일을 YYYY-MM-DD 형식으로 입력해주세요.");
+      return;
+    }
+
+    const birthDate = new Date(childBirthDate);
+    const currentDate = new Date();
+    const ageInMilliseconds = currentDate - birthDate;
+    const ageInYears = ageInMilliseconds / (1000 * 60 * 60 * 24 * 365);
+
+    if (ageInYears < 0) {
+      alert(
+        "영아 생년월일이 현재 날짜보다 미래입니다. 올바른 생년월일을 입력해주세요."
+      );
+      return;
+    }
+    if (ageInYears > 3) {
+      alert(
+        "본 설문조사는 36개월 이하의 영아를 대상으로 합니다. 생후 36개월 이상의 영아는 검사 대상이 아닙니다."
+      );
+      return;
+    }
 
     navigate("/step1");
   };
@@ -68,16 +106,62 @@ const WelcomePage = () => {
         (충북대학교 아동복지학과 교수)
       </span>
 
-      <div className="phone-input-wrapper">
+      <div
+        className="phone-input-wrapper"
+        style={{ width: 600, marginTop: 20 }}
+      >
         <div className="phone-input-square">
-          <span className="phone-input-square-text">휴대전화번호</span>
+          <span className="phone-input-square-text" style={{ fontSize: 15 }}>
+            휴대전화번호
+          </span>
         </div>
         <input
           className="phone-input"
+          style={{ fontSize: 14, width: 300 }}
           type="text"
           placeholder="010-1234-5678"
           value={phoneNumber}
           onChange={(e) => setPhoneNumber(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleNext();
+            }
+          }}
+        />
+      </div>
+      <div className="phone-input-wrapper" style={{ width: 600, marginTop: 6 }}>
+        <div className="phone-input-square">
+          <span className="phone-input-square-text" style={{ fontSize: 15 }}>
+            영아 이름
+          </span>
+        </div>
+        <input
+          className="phone-input"
+          style={{ fontSize: 14, width: 300 }}
+          type="text"
+          placeholder="영아 이름을 입력해주세요."
+          value={childName}
+          onChange={(e) => setChildName(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleNext();
+            }
+          }}
+        />
+      </div>
+      <div className="phone-input-wrapper" style={{ width: 600, marginTop: 6 }}>
+        <div className="phone-input-square">
+          <span className="phone-input-square-text" style={{ fontSize: 15 }}>
+            영아 생년월일
+          </span>
+        </div>
+        <input
+          className="phone-input"
+          style={{ fontSize: 14, width: 300 }}
+          type="text"
+          placeholder="YYYY-MM-DD 형식으로 입력해주세요."
+          value={childBirthDate}
+          onChange={(e) => setChildBirthDate(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               handleNext();

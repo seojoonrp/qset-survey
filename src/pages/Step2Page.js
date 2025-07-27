@@ -1,12 +1,15 @@
-import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import React, { useState, useEffect, useContext } from "react";
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 
+import { SurveyContext } from "../context/SurveyContext";
+import "../styles/styles.css";
 import TitleText from "../components/TitleText";
 import NextButton from "../components/NextButton";
 import testAnswers from "../data/testAnswers";
-import "../styles/styles.css";
 import DragQuestion from "../components/DragQuestion";
+
+const API_URL =
+  "https://script.google.com/macros/s/AKfycbz82iJCsudLF0RUve0DXcbjfPh2jXmB8zP3nNNTt4xwyndG4jbjH2bjrpfyhD9AcFFO_A/exec";
 
 const mapGroupToScore = (groupedAnswers) => {
   const entries = Object.entries(groupedAnswers).map(([key, value]) => ({
@@ -31,17 +34,42 @@ const mapGroupToScore = (groupedAnswers) => {
 };
 
 const Step2Page = () => {
-  const location = useLocation();
-  // const initialAnswers = mapGroupToScore(location.state?.answers);
-  const initialAnswers = mapGroupToScore(testAnswers);
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      e.preventDefault();
+      e.returnValue = "";
+    };
 
-  const [answers, setAnswers] = useState(initialAnswers);
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
+  const {
+    step1Answers,
+    step2Answers,
+    setStep2Answers,
+    phoneNumber,
+    childName,
+    childBirthDate,
+  } = useContext(SurveyContext);
+
+  const [sentResult, setSentResult] = useState(false);
+
+  useEffect(() => {
+    if (step2Answers.length === 0 && Object.keys(step1Answers).length === 54) {
+      const initial = mapGroupToScore(step1Answers);
+      setStep2Answers(initial);
+    }
+  }, [step1Answers, step2Answers, setStep2Answers]);
 
   const handleDragEnd = (result) => {
     if (!result.destination) return;
 
     const { draggableId, destination } = result;
-    setAnswers((prev) =>
+    setStep2Answers((prev) =>
       prev.map((item) =>
         item.id.toString() === draggableId
           ? { ...item, score: parseInt(destination.droppableId) }
@@ -50,24 +78,69 @@ const Step2Page = () => {
     );
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
+    if (!phoneNumber.trim() || !childName.trim() || !childBirthDate.trim()) {
+      alert(
+        "휴대전화, 영아 이름, 영아 생년월일 중 유효하지 않은 항목이 있습니다. 새로고침 또는 뒤로가기로 인한 오류일 수 있습니다. 다시 시도해주세요."
+      );
+      return;
+    }
+
     const isValid = [...Array(9)].every(
-      (_, i) => answers.filter((item) => item.score === i + 1).length === 6
+      (_, i) => step2Answers.filter((item) => item.score === i + 1).length === 6
     );
+
     if (!isValid) {
       alert("각 점수(1~9)별로 6개의 문항을 배분해주세요.");
       return;
     }
 
-    console.log("설문이 종료되었습니다.");
-    console.log("최종 문항 분류 결과:", answers);
-    // End Survey
+    const finalResult = {
+      phoneNumber,
+      childName,
+      childBirthDate,
+      answers: step2Answers,
+    };
+
+    console.log("최종 제출 데이터:", finalResult);
+
+    if (!sentResult) {
+      setSentResult(true);
+    } else {
+      alert("설문 응답은 한 번만 제출할 수 있습니다.");
+      return;
+    }
+
+    try {
+      const response = await fetch(API_URL, {
+        redirect: "follow",
+        method: "POST",
+        headers: {
+          "Content-Type": "text/plain;charset=utf-8",
+        },
+        body: JSON.stringify(finalResult),
+      });
+
+      const data = await response.json();
+
+      if (data.result === "success") {
+        alert("설문 응답이 성공적으로 제출되었습니다.");
+      } else {
+        setSentResult(false);
+        alert("서버 오류: " + data.message);
+      }
+    } catch (error) {
+      setSentResult(false);
+      alert("네트워크 오류가 발생했습니다. 다시 시도해주세요.");
+      console.error("Submit error: ", error);
+    }
   };
 
   return (
     <div className="step-wrapper">
       <div className="step-scroll-wrapper">
         <TitleText />
+
         <>
           <span className="step-main-description step2-description">
             2단계는 1단계에서 분류한 ‘상’ , ‘중’ , ‘하’ 그룹의 각 문항을
@@ -182,12 +255,12 @@ const Step2Page = () => {
                     {...provided.droppableProps}
                     className="droppable-wrapper"
                   >
-                    {answers
+                    {step2Answers
                       .filter((item) => item.score === scoreIdx + 1)
                       .sort(
                         (a, b) =>
-                          answers.findIndex((x) => x.id === a.id) -
-                          answers.findIndex((x) => x.id === b.id)
+                          step2Answers.findIndex((x) => x.id === a.id) -
+                          step2Answers.findIndex((x) => x.id === b.id)
                       )
                       .map((item, index) => (
                         <Draggable
@@ -222,8 +295,9 @@ const Step2Page = () => {
         <div className="group-remaining" style={{ width: 575 }}>
           {[...Array(9)].map((_, i) => (
             <span key={i + 1} className="group-remaining-text">
-              {i + 1} : {answers.filter((item) => item.score === i + 1).length}
-              개{i < 8 && <>&nbsp;&nbsp;/&nbsp;&nbsp;</>}
+              {i + 1} :{" "}
+              {step2Answers.filter((item) => item.score === i + 1).length}개
+              {i < 8 && <>&nbsp;&nbsp;/&nbsp;&nbsp;</>}
             </span>
           ))}
         </div>

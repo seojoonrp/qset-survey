@@ -1,33 +1,45 @@
-import React, { useState } from "react";
+import React, { useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { SurveyContext } from "../context/SurveyContext";
 import "../styles/styles.css";
 import NextButton from "../components/NextButton";
 import TitleText from "../components/TitleText";
 import questions from "../data/questions";
 
 const Step1Page = () => {
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      e.preventDefault();
+      e.returnValue = "";
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
+  const { step1Answers, setStep1Answers } = useContext(SurveyContext);
   const navigate = useNavigate();
-  const [answers, setAnswers] = useState({});
 
   const handleSelect = (questionId, answer) => {
-    setAnswers((prevAnswers) => ({
+    setStep1Answers((prevAnswers) => ({
       ...prevAnswers,
       [questionId]: answer,
     }));
   };
 
   const handleNext = () => {
-    // const countH = Object.values(answers).filter((a) => a === "상").length;
-    // const countM = Object.values(answers).filter((a) => a === "중").length;
-    // const countL = Object.values(answers).filter((a) => a === "하").length;
+    const countH = Object.values(step1Answers).filter((a) => a === "상").length;
+    const countM = Object.values(step1Answers).filter((a) => a === "중").length;
+    const countL = Object.values(step1Answers).filter((a) => a === "하").length;
 
-    // if (countH !== 18 || countM !== 18 || countL !== 18) {
-    //   alert("상, 중, 하 그룹별로 각각 18개씩 선택해 주세요.");
-    //   return;
-    // }
+    if (countH !== 18 || countM !== 18 || countL !== 18) {
+      alert("상, 중, 하 그룹별로 각각 18개씩 선택해 주세요.");
+      return;
+    }
 
-    navigate("/step2", { state: { answers } });
+    navigate("/step2");
   };
 
   return (
@@ -79,7 +91,7 @@ const Step1Page = () => {
                   <button
                     key={opt}
                     className={`option-button ${
-                      answers[q.id] === opt ? "selected" : ""
+                      step1Answers[q.id] === opt ? "selected" : ""
                     }`}
                     onClick={() => handleSelect(q.id, opt)}
                   >
@@ -99,15 +111,16 @@ const Step1Page = () => {
         </span>
         <div className="group-remaining">
           <span className="group-remaining-text">
-            상 : {Object.values(answers).filter((a) => a === "상").length}개
-            &nbsp;&nbsp;/&nbsp;&nbsp;
+            상 : {Object.values(step1Answers).filter((a) => a === "상").length}
+            개 &nbsp;&nbsp;/&nbsp;&nbsp;
           </span>
           <span className="group-remaining-text">
-            중 : {Object.values(answers).filter((a) => a === "중").length}개
-            &nbsp;&nbsp;/&nbsp;&nbsp;
+            중 : {Object.values(step1Answers).filter((a) => a === "중").length}
+            개 &nbsp;&nbsp;/&nbsp;&nbsp;
           </span>
           <span className="group-remaining-text">
-            하 : {Object.values(answers).filter((a) => a === "하").length}개
+            하 : {Object.values(step1Answers).filter((a) => a === "하").length}
+            개
           </span>
         </div>
       </div>
